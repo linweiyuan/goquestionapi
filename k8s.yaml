@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goquestionapi
+spec:
+  selector:
+    matchLabels:
+      app: goquestionapi
+  template:
+    metadata:
+      labels:
+        app: goquestionapi
+    spec:
+      containers:
+        - name: goquestionapi
+          image: goquestionapi
+          imagePullPolicy: Never
+          resources:
+            limits:
+              memory: "20Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+          env:
+          - name: GIN_MODE
+            value: release
+          - name: DB_SOURCE
+            value: postgresql://postgres:postgres@postgres-postgresql.default.svc.cluster.local:5432/postgres?sslmode=disable&search_path=question
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goquestionapi
+spec:
+  selector:
+    app: goquestionapi
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goquestionapi
+  labels:
+    name: goquestionapi
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: "/api(/|$)(.*)"
+            backend:
+              service:
+                name: goquestionapi
+                port:
+                  number: 8080
