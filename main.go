@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/linweiyuan/goquestionapi/middleware"
 	"github.com/linweiyuan/goquestionapi/util"
 	log "github.com/sirupsen/logrus"
 
@@ -17,6 +18,7 @@ func init() {
 	config = util.LoadConfig(".")
 
 	server = gin.Default()
+	server.Use(middleware.CORS())
 }
 
 func main() {
