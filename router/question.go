@@ -16,4 +16,5 @@ func NewQuestionRouter(api *api.QuestionAPI) *QuestionRouter {
 func (router *QuestionRouter) Setup(routerGroup *gin.RouterGroup) {
 	group := routerGroup.Group("/questions")
 	group.GET("", router.api.GetQuestions)
+	group.POST("", router.api.HandleAnswers)
 }

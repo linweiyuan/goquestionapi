@@ -10,6 +10,27 @@ import (
 	"encoding/json"
 )
 
+const getQuestionScoreByID = `-- name: GetQuestionScoreByID :one
+
+SELECT (
+        q.score ->> $1 :: TEXT
+    ) :: INT AS score
+FROM question q
+WHERE q.id = $2
+`
+
+type GetQuestionScoreByIDParams struct {
+	Answer string `json:"answer"`
+	ID     int32  `json:"id"`
+}
+
+func (q *Queries) GetQuestionScoreByID(ctx context.Context, arg GetQuestionScoreByIDParams) (int32, error) {
+	row := q.db.QueryRowContext(ctx, getQuestionScoreByID, arg.Answer, arg.ID)
+	var score int32
+	err := row.Scan(&score)
+	return score, err
+}
+
 const getQuestions = `-- name: GetQuestions :many
 
 SELECT q.id, q.title, q.answer FROM question q ORDER BY q.id

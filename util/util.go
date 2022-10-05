@@ -1,6 +1,7 @@
 package util
 
 import (
+	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -41,4 +42,10 @@ func LoadConfig(path string) (config Config) {
 	log.SetLevel(logLevel)
 
 	return
+}
+
+func HandleError(err error) gin.H {
+	return gin.H{
+		"error": err.Error(),
+	}
 }
