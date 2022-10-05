@@ -9,8 +9,8 @@ import (
 )
 
 type Question struct {
-	ID     int32
-	Title  string
-	Answer json.RawMessage
-	Score  json.RawMessage
+	ID     int32           `json:"id"`
+	Title  string          `json:"title"`
+	Answer json.RawMessage `json:"answer"`
+	Score  json.RawMessage `json:"score"`
 }

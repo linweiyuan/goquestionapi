@@ -16,9 +16,9 @@ SELECT q.id, q.title, q.answer FROM question q ORDER BY q.id
 `
 
 type GetQuestionsRow struct {
-	ID     int32
-	Title  string
-	Answer json.RawMessage
+	ID     int32           `json:"id"`
+	Title  string          `json:"title"`
+	Answer json.RawMessage `json:"answer"`
 }
 
 func (q *Queries) GetQuestions(ctx context.Context) ([]GetQuestionsRow, error) {
