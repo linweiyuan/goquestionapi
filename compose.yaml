@@ -1,0 +1,13 @@
+services:
+  goquestionapi:
+    container_name: goquestionapi
+    image: goquestionapi
+    ports:
+      - 8080:8080
+    build: .
+    environment:
+      - TZ=Asia/Shanghai
+      - GIN_MODE=release
+      - DB_SOURCE=postgresql://postgres:postgres@192.168.31.60:5432/postgres?sslmode=disable&search_path=question
+      - LOG_LEVEL=info
+    restart: unless-stopped
